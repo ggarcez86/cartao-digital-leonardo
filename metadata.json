@@ -2,11 +2,17 @@
   "name": "Leonardo Honorato - Cartão Digital",
   "short_name": "Leonardo H.",
   "description": "Cartão Digital Premium - Leonardo Honorato",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#161616",
   "theme_color": "#161616",
   "icons": [
+    {
+      "src": "https://cdn.bioflow.online/Logo%20HTO.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable"
+    },
     {
       "src": "https://cdn.bioflow.online/Logo%20HTO.webp",
       "sizes": "512x512",
