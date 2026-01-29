@@ -29,9 +29,9 @@ const App: React.FC = () => {
   };
 
   const handleDirectEmail = () => {
-    // Força a abertura no Gmail Web/App
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_DATA.email}`;
-    window.open(gmailUrl, '_blank');
+    // mailto: é o comando nativo que chama o app de e-mail sem passar pelo navegador.
+    // Se abrir o Outlook, é porque ele está definido como padrão no celular do usuário.
+    window.location.href = `mailto:${CONTACT_DATA.email}`;
   };
 
   const handleSharePdfWhatsapp = () => {
@@ -40,11 +40,24 @@ const App: React.FC = () => {
   };
 
   const handleSharePdfEmail = () => {
-    const subject = encodeURIComponent(`Cartão Digital - ${CONTACT_DATA.name}`);
-    const body = encodeURIComponent(`Olá, segue o link do meu cartão digital: ${ASSET_URLS.cardPdf}`);
-    // Força a abertura no Gmail Web/App com assunto e corpo pré-preenchidos
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${subject}&body=${body}`;
-    window.open(gmailUrl, '_blank');
+    const title = `Cartão Digital - ${CONTACT_DATA.name}`;
+    const text = `Olá, segue o link do meu cartão digital: ${ASSET_URLS.cardPdf}`;
+    
+    // Tenta usar o compartilhamento nativo do celular (melhor experiência para Gmail)
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: text,
+        url: ASSET_URLS.cardPdf
+      }).catch(err => {
+        // Fallback para mailto se o compartilhamento for cancelado ou falhar
+        const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text)}`;
+        window.location.href = mailtoUrl;
+      });
+    } else {
+      const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text)}`;
+      window.location.href = mailtoUrl;
+    }
   };
 
   const handleDownloadPdf = () => {
