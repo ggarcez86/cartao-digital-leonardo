@@ -29,8 +29,7 @@ const App: React.FC = () => {
   };
 
   const handleDirectEmail = () => {
-    // mailto: é o comando nativo que chama o app de e-mail sem passar pelo navegador.
-    // Se abrir o Outlook, é porque ele está definido como padrão no celular do usuário.
+    // Comando nativo para abrir o app de e-mail padrão configurado no celular
     window.location.href = `mailto:${CONTACT_DATA.email}`;
   };
 
@@ -41,21 +40,21 @@ const App: React.FC = () => {
 
   const handleSharePdfEmail = () => {
     const title = `Cartão Digital - ${CONTACT_DATA.name}`;
-    const text = `Olá, segue o link do meu cartão digital: ${ASSET_URLS.cardPdf}`;
+    // Ao colocar o link dentro do texto, forçamos o Gmail a exibir no corpo da mensagem
+    const fullText = `Olá, segue o link do meu cartão digital: ${ASSET_URLS.cardPdf}`;
     
-    // Tenta usar o compartilhamento nativo do celular (melhor experiência para Gmail)
     if (navigator.share) {
       navigator.share({
         title: title,
-        text: text,
-        url: ASSET_URLS.cardPdf
+        text: fullText
+        // Note: Não incluímos o campo 'url' separadamente aqui pois o Gmail costuma
+        // ignorar o 'text' quando 'url' está presente, ou vice-versa.
       }).catch(err => {
-        // Fallback para mailto se o compartilhamento for cancelado ou falhar
-        const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text)}`;
+        const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(fullText)}`;
         window.location.href = mailtoUrl;
       });
     } else {
-      const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text)}`;
+      const mailtoUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(fullText)}`;
       window.location.href = mailtoUrl;
     }
   };
