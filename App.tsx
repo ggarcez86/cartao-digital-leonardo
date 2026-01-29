@@ -29,7 +29,9 @@ const App: React.FC = () => {
   };
 
   const handleDirectEmail = () => {
-    window.location.href = `mailto:${CONTACT_DATA.email}`;
+    // Força a abertura no Gmail Web/App
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_DATA.email}`;
+    window.open(gmailUrl, '_blank');
   };
 
   const handleSharePdfWhatsapp = () => {
@@ -40,7 +42,9 @@ const App: React.FC = () => {
   const handleSharePdfEmail = () => {
     const subject = encodeURIComponent(`Cartão Digital - ${CONTACT_DATA.name}`);
     const body = encodeURIComponent(`Olá, segue o link do meu cartão digital: ${ASSET_URLS.cardPdf}`);
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    // Força a abertura no Gmail Web/App com assunto e corpo pré-preenchidos
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
   };
 
   const handleDownloadPdf = () => {
